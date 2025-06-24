@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/category_permissions_title">
+        <Preference
+            app:key="dnd_permission"
+            app:summary="@string/permission_dnd_summary_denied"
+            app:title="@string/permission_dnd_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_theme_title">
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:key="theme"
+            app:summary="%s"
+            app:title="@string/theme_preference_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_sound_vibration_title" />
+</PreferenceScreen>

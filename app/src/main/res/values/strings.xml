@@ -5,9 +5,33 @@
     <string name="silent">Silent</string>
     <string name="vibration">Vibration</string>
 
-    <string name="completed">Now you can change the device`s audio from the Quick Settings Panel, just add this app`s Quick Setting.</string>
+    <string name="main_activity_title">Setup</string>
+    <string name="permission_dnd_title">Do Not Disturb Access</string>
+    <string name="permission_dnd_summary_granted">Granted. You can now add the tile to your Quick Settings panel.</string>
+    <string name="permission_dnd_summary_denied">Required to allow the app to change sound modes.</string>
+    <string name="completed">You can now change the device audio from the quick settings panel, just add this app\'s quick setting.</string>
+    <string name="not_completed">For the app to work, it needs permission to modify Do Not Disturb mode.</string>
 
-    <string name="not_completed">The app needs permission to change the Do Not Disturb mode in order to work.</string>
-
+    <string name="grant_permission_button_text">Grant Permission</string>
     <string name="toast_text">Grant the app permission to use it</string>
+
+    <!-- Preference Categories -->
+    <string name="category_permissions_title">Permissions</string>
+    <string name="category_theme_title">Theme</string>
+    <string name="category_sound_vibration_title">Sound &amp; vibration</string>
+
+    <!-- Theme Preference -->
+    <string name="theme_preference_title">App theme</string>
+    <string name="category_premium_title">Premium</string>  <!-- Added default value -->
+    <string name="category_credits_title">Credits</string>  <!-- Added default value -->
+
+    <!-- Sound & Vibration Preferences -->
+    <string name="haptic_feedback_title">Haptic feedback</string>
+    <string name="haptic_feedback_summary">Vibrate when changing sound modes</string>
+
+    <!-- Credits Preferences -->
+    <string name="about_category_title">About</string>
+    <string name="author_title">Author</string>
+    <string name="author_name">Thede</string>
+    <string name="version_title">Version</string>
 </resources>

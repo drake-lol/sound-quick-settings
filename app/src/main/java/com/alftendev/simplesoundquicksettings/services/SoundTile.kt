@@ -8,12 +8,11 @@ import android.graphics.drawable.Icon
 import android.media.AudioManager
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import com.alftendev.simplesoundquicksettings.MainActivity
 import com.alftendev.simplesoundquicksettings.R
 import com.alftendev.simplesoundquicksettings.Utils
 
 class SoundTile : TileService() {
-    private var latestAudioStateUpdate: Int? = null
-
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == AudioManager.RINGER_MODE_CHANGED_ACTION) {
@@ -24,11 +23,6 @@ class SoundTile : TileService() {
 
     private fun updateSoundTile() {
         val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-
-        if (latestAudioStateUpdate == audioManager.ringerMode) {
-            latestAudioStateUpdate = null
-            return
-        }
 
         if (qsTile == null) {
             return
@@ -62,40 +56,34 @@ class SoundTile : TileService() {
     override fun onClick() {
         super.onClick()
 
-        val audio = getSystemService(AUDIO_SERVICE) as AudioManager
-
-        audio.ringerMode = when (audio.ringerMode) {
+        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        val nextRingerMode = when (audioManager.ringerMode) {
             AudioManager.RINGER_MODE_NORMAL -> AudioManager.RINGER_MODE_VIBRATE
-
-            AudioManager.RINGER_MODE_VIBRATE -> {
-                audio.ringerMode = AudioManager.RINGER_MODE_NORMAL
-                AudioManager.RINGER_MODE_SILENT
-            }
-
+            AudioManager.RINGER_MODE_VIBRATE -> AudioManager.RINGER_MODE_SILENT
             AudioManager.RINGER_MODE_SILENT -> AudioManager.RINGER_MODE_NORMAL
-
-            else -> {
-                return
-            }
+            else -> return
         }
 
-        latestAudioStateUpdate = audio.ringerMode
+        // Changing to silent mode requires Do Not Disturb permission.
+        // If not granted, open the app to let the user grant it.
+        if (nextRingerMode == AudioManager.RINGER_MODE_SILENT && !Utils.isDoNotDisturbPermissionGranted(this)) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivityAndCollapse(intent)
+            return
+        }
 
+        audioManager.ringerMode = nextRingerMode
         updateSoundTile()
     }
 
     override fun onStartListening() {
         super.onStartListening()
-
         updateSoundTile()
     }
 
     override fun onCreate() {
         super.onCreate()
-
-        if (!Utils.isDoNotDisturbPermissionGranted(this)) {
-            Utils.requestDoNotDisturbPermission(this)
-        }
 
         this.registerReceiver(
             broadcastReceiver,
